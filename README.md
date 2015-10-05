@@ -1,2 +1,5 @@
 # scripts-sysadmin
-scripts for sysadmin linux
+
+scripts for sysadmin administrator linux 
+
+
