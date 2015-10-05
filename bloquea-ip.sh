@@ -13,18 +13,19 @@ for x in $(cat /home/webmaster/ips-malascorreo.txt); do
 
 	geoiplookup -f /home/webmaster/GeoIP.dat $x | awk {'print $4'} | cut -f1 -d, >> /home/webmaster/geolocalizamos.txt
 
-
-
+#parseamos a geolocalizacion, si estan fora de espanistan bloqueamos
 
 	for i in $(cat /home/webmaster/geolocalizamos.txt); do
 
-		if [ $i = ES ]; then 
+		if [ $i = ES ]; then
 
 			echo "ip de espanistan"
 
 		else
 			iptables -A INPUT -s $x -j DROP
-			echo "ip baneada"
+			echo "ip $x baneada"
+
+			mail -s "IPS BLOQUEADAS NO SERVIDOR DE OVH" tomas@cianela.com <<< "a ip $x foi bloqueada"
 
 		fi
 	done
@@ -33,5 +34,3 @@ done
 
 rm -f /home/webmaster/ips-malascorreo.txt
 rm -f /home/webmaster/geolocalizamos.txt
-	
-
